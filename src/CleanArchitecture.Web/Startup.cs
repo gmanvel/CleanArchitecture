@@ -58,13 +58,10 @@ namespace CleanArchitecture.Web
 			});
 		}
 
-		public void ConfigureContainer(ContainerBuilder builder)
-		{
-			builder.RegisterModule(new DefaultInfrastructureModule(_env.EnvironmentName == "Development"));
-		}
+		public virtual void ConfigureContainer(ContainerBuilder builder) =>
+		    builder.RegisterModule(new DefaultInfrastructureModule(_env.EnvironmentName == "Development"));
 
-
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.EnvironmentName == "Development")
 			{

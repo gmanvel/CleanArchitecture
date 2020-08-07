@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using CleanArchitecture.Core.Entities;
+using Newtonsoft.Json;
 
 namespace CleanArchitecture.Web.ApiModels
 {
@@ -14,6 +15,7 @@ namespace CleanArchitecture.Web.ApiModels
         [Required]
         public string Title { get; set; }
         public string Description { get; set; }
+        [JsonProperty("isDone")]
         public bool IsDone { get; private set; }
 
         public static ToDoItemDTO FromToDoItem(ToDoItem item)

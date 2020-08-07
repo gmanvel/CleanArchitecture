@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Core.Events;
+﻿using System;
+using CleanArchitecture.Core.Events;
 using CleanArchitecture.Core.Interfaces;
 using CleanArchitecture.SharedKernel;
 
@@ -16,6 +17,12 @@ namespace CleanArchitecture.Core.Entities
 
             Events.Add(new ToDoItemCompletedEvent(this));
         }
+
+        public override bool Equals(object obj) => Equals(obj as ToDoItem);
+
+        public override int GetHashCode() => Id.GetHashCode();
+
+        public bool Equals(ToDoItem todoItem) => todoItem?.Id == this.Id;
 
         public override string ToString()
         {

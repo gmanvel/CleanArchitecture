@@ -57,9 +57,11 @@ namespace CleanArchitecture.Infrastructure.Data
                 entity.Events.Clear();
                 foreach (var domainEvent in events)
                 {
-                    await _mediator.Publish(domainEvent).ConfigureAwait(false);
+                    await _mediator.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
                 }
             }
+
+            await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return result;
         }

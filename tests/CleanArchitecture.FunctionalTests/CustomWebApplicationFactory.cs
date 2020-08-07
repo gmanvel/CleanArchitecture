@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.SharedKernel.Interfaces;
-using CleanArchitecture.Infrastructure.Data;
+﻿using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.UnitTests;
 using CleanArchitecture.Web;
 using Microsoft.AspNetCore.Hosting;
@@ -10,12 +9,29 @@ using Microsoft.Extensions.Logging;
 using System;
 using Microsoft.AspNetCore.TestHost;
 using System.Linq;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using MediatR;
+using Microsoft.Extensions.Hosting;
 
 namespace CleanArchitecture.FunctionalTests
 {
-    public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<Startup>
+    public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup: class
     {
+        protected override IHostBuilder CreateHostBuilder() =>
+            Host
+                .CreateDefaultBuilder(null)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory(containerBuilder =>
+                    {
+                        containerBuilder.RegisterModule(new TestInfrastructureModule());
+                    }))
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder
+                        .UseStartup<TStartup>()
+                        .UseEnvironment("Test");
+                });
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder
