@@ -61,8 +61,6 @@ namespace CleanArchitecture.Infrastructure.Data
                 }
             }
 
-            await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
             return result;
         }
 
